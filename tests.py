@@ -7,10 +7,10 @@ from utils import (
 )
 
 DEFAULT_LOG_TYPES = {
-    'name': 'string',
-    'activity': 'string',
-    'job_id': 'Int64',
-    'timestamp': 'string'
+    "name": "string",
+    "activity": "string",
+    "job_id": "Int64",
+    "timestamp": "string"
 }
 
 DEFAULT_INPUT_PATH = "data/logs.log"

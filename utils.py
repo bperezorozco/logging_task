@@ -13,7 +13,7 @@ def _log_duration_warnings_and_errors(row: pd.Series) -> str:
     Checks the duration of a job and returns a warning or error message if thresholds are exceeded.
 
     Args:
-        row (pd.Series): A row from the DataFrame, expected to contain a 'duration' value and a name (used as job_id).
+        row (pd.Series): A row from the DataFrame, expected to contain a "duration" value and a name (used as job_id).
 
     Returns:
         str: A formatted warning/error string if thresholds are exceeded, otherwise an empty string.
@@ -41,14 +41,14 @@ def create_log_report(df_pivoted: pd.DataFrame, output_path: str) -> str:
     and returns the compiled report text.
 
     Args:
-        df_pivoted (pd.DataFrame): A DataFrame with 'START' and 'END' datetime columns, indexed by job_id.
+        df_pivoted (pd.DataFrame): A DataFrame with "START" and "END" datetime columns, indexed by job_id.
 
     Returns:
         str: A report string combining all duration warnings and errors.
     """
-    df_pivoted['duration'] = (df_pivoted['END'] -
-                              df_pivoted['START']).dt.total_seconds()
-    report = df_pivoted[['duration']].apply(_log_duration_warnings_and_errors,
+    df_pivoted["duration"] = (df_pivoted["END"] -
+                              df_pivoted["START"]).dt.total_seconds()
+    report = df_pivoted[["duration"]].apply(_log_duration_warnings_and_errors,
                                             axis=1).str.cat()
 
     # write report to file
@@ -63,18 +63,18 @@ def pivot_logs(df_logs: pd.DataFrame) -> pd.DataFrame:
     Pivots a log DataFrame into a DataFrame indexed by job_id, with START and END timestamps.
 
     Args:
-        df_logs (pd.DataFrame): A DataFrame with 'job_id' (row index), 'activity' (START/END), and 'timestamp' columns.
+        df_logs (pd.DataFrame): A DataFrame with "job_id" (row index), "activity" (START/END), and "timestamp" columns.
 
     Returns:
-        pd.DataFrame: A pivoted DataFrame with 'START' and 'END' columns indexed by job_id.
+        pd.DataFrame: A pivoted DataFrame with "START" and "END" columns indexed by job_id.
 
     Raises:
         ValueError: If duplicate START or END entries exist for the same job_id.
     """
     try:
-        df_pivoted = df_logs.pivot(index='job_id',
-                                   columns='activity',
-                                   values='timestamp')
+        df_pivoted = df_logs.pivot(index="job_id",
+                                   columns="activity",
+                                   values="timestamp")
     except ValueError:
         logger.error(
             "Duplicate activities for the same job_id. Ensure each job_id has only one START and one END activity."
@@ -114,11 +114,11 @@ def parse_file(file_path: str, types: Dict) -> pd.DataFrame:
             dtype=types,
         )
         df["timestamp"] = pd.to_datetime(df["timestamp"],
-                                         format='%H:%M:%S',
+                                         format="%H:%M:%S",
                                          errors="coerce")
 
         # strip whitespace from activity column
-        df['activity'] = df['activity'].str.strip()
+        df["activity"] = df["activity"].str.strip()
 
     except FileNotFoundError:
         logger.error("File not found. Please check the file path.")
@@ -126,7 +126,7 @@ def parse_file(file_path: str, types: Dict) -> pd.DataFrame:
 
     logger.info(f"File loaded successfully with {len(df)} rows.")
 
-    if not df['timestamp'].is_monotonic_increasing:
+    if not df["timestamp"].is_monotonic_increasing:
         logger.error(
             "Timestamps are malformed or not in increasing order. Please provide a log file with timestamps in the %H:%M:%S format and in increasing order."
         )

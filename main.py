@@ -3,10 +3,10 @@ import logging
 from utils import create_log_report, pivot_logs, parse_file
 
 LOG_TYPES = {
-    'name': 'string',
-    'activity': 'string',
-    'job_id': 'Int64',
-    'timestamp': 'string'
+    "name": "string",
+    "activity": "string",
+    "job_id": "Int64",
+    "timestamp": "string"
 }
 
 INPUT_PATH = "data/logs.log"
